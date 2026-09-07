@@ -1,0 +1,4076 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+
+<meta name="theme-color" content="#000000">
+
+<title>Um lugar só nosso</title>
+
+<style>
+
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+========================================================= */
+
+:root{
+  --blue-950:#000000;
+  --blue-900:#030303;
+  --blue-850:#060606;
+  --blue-800:#090909;
+  --blue-700:#111111;
+  --blue-600:#1a1a1a;
+  --blue-500:#2a2a2a;
+  --blue-400:#777777;
+  --blue-300:#d6d6d6;
+  --blue-200:#eeeeee;
+
+  --pink:#f2abc9;
+  --pink-soft:#ffdbe9;
+
+  --cream:#fff9f3;
+  --gold:#ffd783;
+
+  --text:#f5f5f5;
+  --text-soft:#b8b8b8;
+
+  --glass:rgba(18,18,18,.72);
+  --glass-light:rgba(255,255,255,.08);
+
+  --shadow:0 30px 90px rgba(0,0,0,.38);
+
+  --radius:28px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:#000;
+  color:var(--text);
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Arial,
+    sans-serif;
+  overflow-x:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+::selection{
+  background:var(--pink);
+  color:#17263a;
+}
+
+
+/* =========================================================
+   TELAS
+========================================================= */
+
+.screen{
+  min-height:100svh;
+  position:relative;
+}
+
+.hidden{
+  display:none !important;
+}
+
+
+/* =========================================================
+   TELA DA SENHA
+========================================================= */
+
+#lockScreen{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:
+    max(22px, env(safe-area-inset-top))
+    20px
+    max(22px, env(safe-area-inset-bottom));
+
+  overflow:auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,255,255,.06),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #030b15,
+      #030303 50%,
+      #060606
+    );
+}
+
+.lockMist{
+  position:absolute;
+  inset:auto -20% -12% -20%;
+  height:50%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.04),
+      transparent 66%
+    );
+
+  filter:blur(35px);
+  pointer-events:none;
+}
+
+.lockCard{
+  position:relative;
+  z-index:10;
+
+  width:min(670px, 100%);
+  padding:clamp(25px,5vw,52px);
+
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:32px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(10,10,10,.92),
+      rgba(18,18,18,.78)
+    );
+
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+}
+
+.lockTiny{
+  margin-bottom:20px;
+
+  font-size:.72rem;
+  letter-spacing:.32em;
+  color:var(--blue-300);
+  text-transform:uppercase;
+}
+
+.lockCard h1{
+  margin:0 0 26px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,7vw,4.2rem);
+  font-weight:400;
+}
+
+.riddle{
+  color:#d0d0d0;
+  line-height:1.82;
+  font-size:clamp(.95rem,2.7vw,1.08rem);
+}
+
+.riddle strong{
+  color:white;
+}
+
+.frenchHint{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-top:20px;
+  padding:14px 16px;
+
+  border-left:2px solid var(--pink);
+
+  color:var(--pink-soft);
+  background:rgba(255,255,255,.035);
+}
+
+.passwordArea{
+  position:relative;
+  z-index:1100;
+
+  display:flex;
+  gap:10px;
+
+  margin-top:27px;
+}
+
+#passwordInput{
+  position:relative;
+  z-index:1101;
+
+  flex:1;
+  min-width:0;
+  height:56px;
+
+  padding:0 18px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:16px;
+
+  outline:none;
+
+  color:white;
+  background:rgba(3,15,29,.8);
+
+  pointer-events:auto !important;
+  touch-action:manipulation;
+  -webkit-user-select:text;
+  user-select:text;
+}
+
+#passwordInput:focus{
+  border-color:var(--blue-400);
+  box-shadow:0 0 0 4px rgba(255,255,255,.08);
+}
+
+.enterBtn{
+  min-width:120px;
+
+  border:0;
+  border-radius:16px;
+
+  padding:0 20px;
+
+  color:#061a2d;
+  font-weight:800;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--blue-300),
+      var(--pink-soft)
+    );
+
+  box-shadow:0 12px 30px rgba(0,0,0,.28);
+}
+
+#errorMessage{
+  min-height:22px;
+  margin-top:12px;
+
+  font-size:.9rem;
+  color:#ffc8d6;
+}
+
+#extraHint{
+  margin-top:14px;
+  color:#aaaaaa;
+  font-size:.88rem;
+  opacity:0;
+
+  transition:.7s;
+}
+
+#extraHint.visible{
+  opacity:1;
+}
+
+
+/* =========================================================
+   TRANSIÇÃO "JE T'AIME"
+========================================================= */
+
+#transitionScreen{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  background:#000000;
+}
+
+.transitionWord{
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,13vw,8rem);
+  letter-spacing:.08em;
+  color:white;
+
+  opacity:0;
+  transform:translateY(20px);
+
+  animation:transitionReveal 3s forwards;
+}
+
+@keyframes transitionReveal{
+  0%{
+    opacity:0;
+    transform:translateY(20px);
+  }
+
+  25%{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  75%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+    transform:translateY(-12px);
+  }
+}
+
+
+/* =========================================================
+   SITE PRINCIPAL
+========================================================= */
+
+#site{
+  display:none;
+  position:relative;
+}
+
+section{
+  position:relative;
+}
+
+.content{
+  width:min(1100px, calc(100% - 36px));
+  margin:auto;
+}
+
+
+/* =========================================================
+   HERO / LAGO
+========================================================= */
+
+.hero{
+  min-height:100svh;
+
+  display:flex;
+  align-items:center;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #000 0%, #030303 55%, #080808 100%
+    );
+}
+
+
+/* lua */
+
+.moon{
+  position:absolute;
+  top:9%;
+  right:13%;
+
+  width:clamp(72px,10vw,120px);
+  aspect-ratio:1;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #fffdf0,
+      #f6e1ae 60%,
+      #d9b56d
+    );
+
+  box-shadow:
+    0 0 30px rgba(255,226,158,.33),
+    0 0 90px rgba(255,226,158,.18);
+}
+
+
+/* montanhas */
+
+.mountains{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:36%;
+
+  height:24%;
+
+  opacity:.7;
+
+  background:
+    linear-gradient(
+      145deg,
+      transparent 0 12%,
+      #080808 13% 29%,
+      transparent 30% 34%,
+      #0b0b0b 35% 51%,
+      transparent 52% 61%,
+      #070707 62% 77%,
+      transparent 78%
+    );
+}
+
+
+/* lago */
+
+.lake{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+
+  height:43%;
+
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #070707,
+      #090909 25%,
+      #050505 65%,
+      #000000
+    );
+}
+
+.lake::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    repeating-linear-gradient(
+      178deg,
+      transparent 0 19px,
+      rgba(255,255,255,.045) 20px,
+      transparent 22px 44px
+    );
+
+  animation:waterMove 10s linear infinite;
+}
+
+@keyframes waterMove{
+  from{
+    transform:translateX(-30px);
+  }
+
+  to{
+    transform:translateX(30px);
+  }
+}
+
+
+/* reflexo da lua */
+
+.moonReflection{
+  position:absolute;
+  right:11%;
+  top:0;
+
+  width:20%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,227,164,.4),
+      transparent 72%
+    );
+
+  clip-path:polygon(
+    37% 0,
+    63% 0,
+    80% 100%,
+    19% 100%
+  );
+
+  filter:blur(9px);
+  opacity:.4;
+}
+
+
+/* luzes flutuando */
+
+.waterLight{
+  position:absolute;
+
+  width:4px;
+  height:4px;
+
+  border-radius:50%;
+  background:white;
+
+  box-shadow:
+    0 0 6px white,
+    0 0 18px #ffffff;
+
+  animation:floatLight 5s ease-in-out infinite;
+}
+
+@keyframes floatLight{
+  0%,100%{
+    transform:translateY(0);
+    opacity:.4;
+  }
+
+  50%{
+    transform:translateY(-9px);
+    opacity:1;
+  }
+}
+
+
+/* nevoa */
+
+.mist{
+  position:absolute;
+  left:-10%;
+  right:-10%;
+  bottom:29%;
+
+  height:18%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,255,255,.045),
+      transparent 65%
+    );
+
+  filter:blur(24px);
+  animation:mistMove 14s ease-in-out infinite alternate;
+}
+
+@keyframes mistMove{
+  from{
+    transform:translateX(-3%);
+  }
+
+  to{
+    transform:translateX(3%);
+  }
+}
+
+
+/* conteúdo hero */
+
+.heroContent{
+  position:relative;
+  z-index:20;
+
+  padding-top:60px;
+  padding-bottom:30vh;
+}
+
+.heroEyebrow{
+  margin-bottom:18px;
+
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.33em;
+  color:var(--blue-300);
+}
+
+.hero h1{
+  max-width:800px;
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,10vw,7rem);
+  font-weight:400;
+  line-height:.95;
+}
+
+.hero h1 span{
+  color:#f0f0f0;
+}
+
+.heroText{
+  max-width:550px;
+  margin-top:25px;
+
+  line-height:1.8;
+  color:#d0d0d0;
+}
+
+.scrollHint{
+  margin-top:34px;
+
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+
+  font-size:.78rem;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:#9fc5df;
+}
+
+.scrollLine{
+  width:45px;
+  height:1px;
+  background:#9fc5df;
+}
+
+
+/* Gatinho interativo estilo scamp-cat */
+#scamp-cat {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 9999;
+  transition: none;
+}
+
+.musicPlayer{
+  position:fixed;
+  z-index:800;
+
+  right:18px;
+  bottom:
+    max(
+      18px,
+      calc(env(safe-area-inset-bottom) + 10px)
+    );
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:9px 12px 9px 9px;
+
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;
+
+  background:rgba(5,26,48,.72);
+  backdrop-filter:blur(16px);
+
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.musicButton{
+  width:39px;
+  height:39px;
+
+  display:grid;
+  place-items:center;
+
+  border:0;
+  border-radius:50%;
+
+  color:white;
+  background:#2f6f9f;
+}
+
+.musicInfo{
+  font-size:.72rem;
+  line-height:1.3;
+}
+
+.musicInfo strong{
+  display:block;
+  font-size:.78rem;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.section{
+  padding:clamp(90px,13vw,170px) 0;
+}
+
+.sectionHeader{
+  max-width:680px;
+  margin-bottom:60px;
+}
+
+.sectionIndex{
+  display:block;
+  margin-bottom:14px;
+
+  font-size:.68rem;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--blue-300);
+}
+
+.sectionTitle{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.5rem,7vw,5.5rem);
+  font-weight:400;
+  line-height:1.05;
+}
+
+.sectionText{
+  margin-top:20px;
+
+  color:#c3dbea;
+  line-height:1.85;
+}
+
+
+/* =========================================================
+   SUN / STORM
+========================================================= */
+
+.sunSection{
+  background:
+    radial-gradient(
+      circle at 82% 30%,
+      rgba(255,214,123,.12),
+      transparent 24%
+    ),
+    linear-gradient(
+      180deg,
+      #0c2f52,
+      #123c61
+    );
+}
+
+.sunQuote{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:35px;
+  align-items:center;
+}
+
+.quoteCard{
+  padding:clamp(26px,5vw,50px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(8,33,60,.62),
+      rgba(37,83,116,.35)
+    );
+
+  box-shadow:var(--shadow);
+}
+
+.quoteCard p{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(1.7rem,4vw,3.2rem);
+  line-height:1.35;
+}
+
+.sunOrb{
+  width:min(300px,70vw);
+  aspect-ratio:1;
+  margin:auto;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 30%,
+      #fffbe5,
+      #ffe69e 37%,
+      #ffc969 74%,
+      #eaa64b
+    );
+
+  box-shadow:
+    0 0 35px rgba(255,220,136,.34),
+    0 0 120px rgba(255,197,103,.18);
+}
+
+
+/* =========================================================
+   QUANDO O MUNDO PESA — nova seção, sem sol
+========================================================= */
+.stormSection{
+  position:relative;
+  overflow:hidden;
+}
+.stormIntro{max-width:720px;margin-bottom:58px;}
+.stormScene{
+  position:relative;
+  min-height:430px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(242,171,201,.10),transparent 28%),
+    linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  box-shadow:0 30px 80px rgba(0,0,0,.35), inset 0 1px rgba(255,255,255,.05);
+}
+.stormScene::before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(105deg,transparent 0 38px,rgba(255,255,255,.025) 39px 40px,transparent 41px 72px);
+  opacity:.7;
+}
+.stormRain{position:absolute;inset:-20%;transform:rotate(12deg);background:repeating-linear-gradient(105deg,transparent 0 42px,rgba(210,220,255,.08) 43px 44px,transparent 45px 82px);animation:rainMove 4s linear infinite;}
+.stormWindow{
+  position:relative;z-index:2;width:min(650px,78%);padding:48px clamp(25px,5vw,58px);
+  text-align:center;border:1px solid rgba(242,171,201,.22);
+  background:rgba(5,5,9,.78);backdrop-filter:blur(8px);
+  box-shadow:0 20px 70px rgba(0,0,0,.45);
+}
+.windowLabel{display:block;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:#d8b5c5;margin-bottom:22px;}
+.stormWindow p{margin:0;font-family:Georgia,serif;font-size:clamp(1.55rem,3.4vw,2.65rem);line-height:1.4;color:#fff;}
+.windowSignature{display:block;margin-top:28px;font-size:.82rem;letter-spacing:.08em;color:#f2abc9;}
+.stormSpark{position:absolute;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 16px 4px rgba(242,171,201,.35);z-index:3;animation:sparkPulse 2.6s ease-in-out infinite;}
+.sparkOne{top:22%;left:16%;}.sparkTwo{right:18%;top:32%;animation-delay:.8s}.sparkThree{left:26%;bottom:19%;animation-delay:1.5s}
+@keyframes rainMove{from{transform:translateY(-20px) rotate(12deg)}to{transform:translateY(55px) rotate(12deg)}}
+@keyframes sparkPulse{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}}
+@media(max-width:600px){.stormScene{min-height:390px}.stormWindow{width:82%;padding:34px 22px}.stormWindow p{font-size:1.45rem;}}
+
+/* =========================================================
+   HISTÓRIAS INTEGRADAS
+========================================================= */
+
+.storyRiver{
+  background:
+    linear-gradient(
+      180deg,
+      #123c61,
+      #103957 45%,
+      #0b2e49
+    );
+}
+
+.storyIntro{
+  max-width:680px;
+}
+
+.storyIntro strong{
+  color:white;
+}
+
+.bookTrail{
+  margin-top:70px;
+
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+
+.bookMoment{
+  display:grid;
+  grid-template-columns:150px 1fr;
+  gap:28px;
+  align-items:center;
+
+  padding:25px;
+
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.09);
+
+  background:rgba(255,255,255,.04);
+
+  transition:
+    transform .35s,
+    background .35s;
+}
+
+.bookMoment:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.065);
+}
+
+.bookMoment:nth-child(even){
+  margin-left:10%;
+}
+
+.bookShape{
+  position:relative;
+
+  width:115px;
+  height:155px;
+
+  border-radius:7px 14px 14px 7px;
+
+  padding:18px 13px;
+
+  display:flex;
+  align-items:flex-end;
+
+  box-shadow:
+    -7px 7px 0 rgba(0,0,0,.17),
+    0 18px 30px rgba(0,0,0,.25);
+
+  overflow:hidden;
+}
+
+.bookShape::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255,255,255,.2),
+      transparent 40%
+    );
+}
+
+.bookShape span{
+  position:relative;
+  z-index:3;
+
+  font-family:Georgia,serif;
+  font-size:.9rem;
+  line-height:1.2;
+}
+
+.binding{
+  background:#556f8b;
+}
+
+.keeping{
+  background:#8b5670;
+}
+
+.taming{
+  background:#d6a35e;
+  color:#172130;
+}
+
+.first{
+  background:#485477;
+}
+
+.drama{
+  background:#7092a9;
+}
+
+.bookText h3{
+  margin:0 0 10px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:400;
+}
+
+.bookText p{
+  margin:0;
+  max-width:650px;
+
+  color:#c2d7e5;
+  line-height:1.8;
+}
+
+
+/* =========================================================
+   MATUÊ / NOITE MUSICAL
+========================================================= */
+
+.musicWorld{
+  overflow:hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      #0b2e49,
+      #071e38 75%
+    );
+}
+
+.musicGlow{
+  position:absolute;
+  width:430px;
+  height:430px;
+
+  right:-130px;
+  top:70px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(100,132,255,.16),
+      rgba(211,98,204,.09),
+      transparent 68%
+    );
+
+  filter:blur(10px);
+}
+
+.neonCard{
+  max-width:800px;
+
+  padding:clamp(28px,6vw,60px);
+
+  border:1px solid rgba(147,184,255,.16);
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(40,51,103,.28),
+      rgba(9,29,53,.65)
+    );
+
+  box-shadow:
+    0 0 60px rgba(83,111,213,.08),
+    var(--shadow);
+}
+
+.neonTitle{
+  margin:0 0 17px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.2rem,7vw,5rem);
+
+  text-shadow:
+    0 0 18px rgba(119,151,255,.2);
+}
+
+.neonLabel{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+
+  margin-top:27px;
+  padding:9px 13px;
+
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:999px;
+
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+
+  color:#cbd7ff;
+}
+
+.neonDot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#b174ff;
+
+  box-shadow:
+    0 0 9px #b174ff,
+    0 0 19px rgba(177,116,255,.6);
+}
+
+
+/* =========================================================
+   PIXEL SKY — clima de montanha / aventura, inspirado em Celeste
+   (formas originais em CSS, sem assets do jogo)
+========================================================= */
+.musicWorld{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:
+    linear-gradient(180deg,#07152f 0%,#102d4b 52%,#193f59 100%);
+}
+
+.celestePixelSky{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.celestePixelSky::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:38%;
+  background:linear-gradient(180deg,transparent,rgba(4,14,31,.3));
+}
+
+.pixelStar{
+  position:absolute;
+  width:4px;
+  height:4px;
+  background:#d8eaff;
+  box-shadow:4px 0 #d8eaff,0 4px #d8eaff,4px 4px #d8eaff;
+  opacity:.7;
+  animation:pixelTwinkle 3s steps(2,end) infinite;
+}
+.pixelStar.s1{left:13%;top:18%;}
+.pixelStar.s2{left:31%;top:10%;animation-delay:.7s;}
+.pixelStar.s3{left:67%;top:17%;animation-delay:1.4s;}
+.pixelStar.s4{left:83%;top:9%;animation-delay:2s;}
+.pixelStar.s5{left:54%;top:28%;animation-delay:1s;}
+
+@keyframes pixelTwinkle{
+  0%,100%{opacity:.25;transform:scale(1)}
+  50%{opacity:.9;transform:scale(1.35)}
+}
+
+/* removed old pixel cloud */
+.pixelCloud{
+  position:absolute;
+  width:72px;
+  height:16px;
+  background:rgba(205,228,246,.10);
+  box-shadow:
+    12px -8px rgba(205,228,246,.10),
+    28px -12px rgba(205,228,246,.10),
+    48px -6px rgba(205,228,246,.10),
+    64px 0 rgba(205,228,246,.10);
+  image-rendering:pixelated;
+  animation:cloudFloat 18s linear infinite;
+}
+.cloud1{top:25%;left:-110px;}
+.cloud2{top:39%;left:58%;transform:scale(.72);animation-duration:24s;animation-delay:-9s;}
+
+@keyframes cloudFloat{
+  from{margin-left:-20px}
+  to{margin-left:calc(100vw + 150px)}
+}
+
+.pixelMountain{
+  position:absolute;
+  left:-5%;
+  width:110%;
+  bottom:0;
+  clip-path:polygon(0 100%,0 78%,8% 72%,14% 78%,24% 51%,31% 68%,40% 35%,47% 59%,55% 42%,64% 67%,73% 48%,82% 72%,90% 55%,100% 73%,100% 100%);
+}
+.pixelMountain.back{
+  height:58%;
+  background:#122f4c;
+  opacity:.8;
+}
+.pixelMountain.front{
+  height:45%;
+  background:#0b223b;
+  clip-path:polygon(0 100%,0 68%,12% 57%,20% 73%,32% 40%,41% 64%,51% 30%,59% 61%,69% 44%,78% 70%,89% 49%,100% 67%,100% 100%);
+}
+.pixelSnow{
+  position:absolute;
+  bottom:35%;
+  left:0;
+  width:100%;
+  height:7px;
+  opacity:.16;
+  background:repeating-linear-gradient(90deg,transparent 0 22px,#d7e8f7 22px 31px,transparent 31px 48px);
+}
+
+.musicWorld > .content{position:relative;z-index:2;}
+
+.neonCard{
+  position:relative;
+  overflow:hidden;
+  backdrop-filter:blur(2px);
+}
+
+.neonCard::before{
+  content:"✦  ✧  ✦";
+  position:absolute;
+  top:18px;
+  right:24px;
+  font-size:13px;
+  letter-spacing:9px;
+  color:rgba(191,219,255,.35);
+}
+
+/* =========================================================
+   KITTY-INSPIRED SCRAPBOOK
+========================================================= */
+
+
+
+.scrapPixelBackdrop{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:.55;
+}
+.scrapbook{position:relative;isolation:isolate;overflow:hidden;}
+.scrapbook > .content{position:relative;z-index:2;}
+.scrapPixelStar{
+  position:absolute;
+  width:5px;height:5px;
+  background:#fff;
+  box-shadow:5px 0 #fff,0 5px #fff,5px 5px #fff;
+  opacity:.55;
+}
+.ps1{left:8%;top:18%}.ps2{right:12%;top:27%}.ps3{left:45%;bottom:14%}
+.scrapCloud,.scrapHill{position:absolute;image-rendering:pixelated;}
+.scrapCloud{width:90px;height:18px;background:rgba(191,222,242,.10);box-shadow:14px -9px rgba(191,222,242,.10),34px -12px rgba(191,222,242,.10),58px -7px rgba(191,222,242,.10);}
+.sc1{left:4%;top:12%}.sc2{right:5%;top:72%;transform:scale(.7)}
+.scrapHill{bottom:-5%;width:65%;height:32%;background:rgba(44,91,113,.22);clip-path:polygon(0 100%,0 72%,16% 58%,27% 78%,44% 38%,56% 69%,71% 49%,84% 72%,100% 56%,100% 100%);}
+.sh1{left:-8%}.sh2{right:-18%;transform:scaleX(-1);}
+
+.scrapbook{
+  background:
+    linear-gradient(180deg,#081d35,#123d57);
+}
+
+.scrapPaper{
+  position:relative;
+  overflow:hidden;
+
+  padding:clamp(25px,5vw,55px);
+
+  border-radius:28px;
+
+  color:#243447;
+
+  background:
+    linear-gradient(
+      140deg,
+      #fffaf8,
+      #f8f2f6
+    );
+
+  box-shadow:var(--shadow);
+}
+
+
+/* fita adesiva */
+
+.tape{
+  position:absolute;
+
+  width:100px;
+  height:28px;
+
+  background:rgba(180,215,239,.65);
+
+  transform:rotate(-8deg);
+}
+
+.tape.one{
+  top:8px;
+  left:35px;
+}
+
+.tape.two{
+  bottom:17px;
+  right:28px;
+
+  transform:rotate(7deg);
+}
+
+
+/* Hello Kitty pixel art — adaptada do CodePen de danixia-torres */
+
+.kittyPixelArt{
+  position:relative;
+  width:190px;
+  min-height:190px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transform:rotate(-3deg);
+}
+
+.kittyPixelArt::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  background:rgba(255,255,255,.55);
+  border:1px dashed rgba(78,105,129,.24);
+  border-radius:18px;
+  transform:rotate(4deg);
+}
+
+#helloKittyPixel{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:180px;
+  height:180px;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+}
+
+.scrapContent{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:28px;
+  align-items:center;
+}
+
+.scrapText h2{
+  margin:0 0 12px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,6vw,4rem);
+  font-weight:400;
+}
+
+.scrapText p{
+  margin:0;
+  max-width:650px;
+
+  line-height:1.8;
+  color:#536678;
+}
+
+.miniStickers{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+
+  margin-top:24px;
+}
+
+.miniSticker{
+  padding:9px 13px;
+
+  border:2px solid #e8c9d7;
+  border-radius:12px;
+
+  background:white;
+
+  font-size:.78rem;
+  font-weight:700;
+
+  transform:rotate(-2deg);
+}
+
+.miniSticker:nth-child(even){
+  transform:rotate(3deg);
+}
+
+
+/* =========================================================
+   CARTA
+========================================================= */
+
+.letterSection{
+  background:
+    linear-gradient(
+      180deg,
+      #103858,
+      #0c304e
+    );
+}
+
+.letterScene{
+  position:relative;
+
+  max-width:850px;
+  margin:auto;
+}
+
+.envelope{
+  position:absolute;
+  right:-20px;
+  top:-25px;
+
+  width:130px;
+  height:90px;
+
+  transform:rotate(7deg);
+
+  background:#e6b2c5;
+
+  border-radius:5px;
+
+  box-shadow:0 18px 30px rgba(0,0,0,.24);
+}
+
+.envelope::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  clip-path:polygon(0 0,50% 55%,100% 0);
+
+  background:#f1cad8;
+}
+
+.envelopeHeart{
+  position:absolute;
+  z-index:3;
+
+  left:50%;
+  top:43%;
+
+  transform:translate(-50%,-50%);
+
+  color:#9d456a;
+  font-size:22px;
+}
+
+.letterPaper{
+  position:relative;
+  z-index:2;
+
+  padding:
+    clamp(35px,7vw,75px)
+    clamp(25px,7vw,75px);
+
+  border-radius:10px;
+
+  color:#283b4b;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(157,200,230,.13) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      #fffdfa,
+      #f8f4ee
+    );
+
+  background-size:100% 34px;
+
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.35);
+}
+
+.letterPaper::before{
+  content:"";
+
+  position:absolute;
+  left:35px;
+  top:0;
+  bottom:0;
+
+  width:1px;
+
+  background:#e7b7c8;
+}
+
+.letterTitle{
+  margin:0 0 35px;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.3rem,6vw,4rem);
+  font-weight:400;
+}
+
+.letterBody{
+  position:relative;
+  z-index:2;
+
+  line-height:2;
+  font-size:clamp(.98rem,2.6vw,1.08rem);
+}
+
+.letterBody p{
+  margin:0 0 22px;
+}
+
+.letterBody .pause{
+  margin:34px 0;
+
+  font-family:Georgia,serif;
+  font-size:1.5rem;
+  color:#925b74;
+}
+
+.signature{
+  margin-top:50px;
+
+  font-family:Georgia,serif;
+  font-style:italic;
+  font-size:1.2rem;
+}
+
+
+/* =========================================================
+   SEGREDOS
+========================================================= */
+
+.secretSection{
+  background:
+    linear-gradient(
+      180deg,
+      #0c304e,
+      #092640
+    );
+}
+
+.secretGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.secretCard{
+  min-height:200px;
+
+  padding:25px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+
+  background:rgba(255,255,255,.04);
+
+  transition:
+    transform .3s,
+    background .3s;
+}
+
+.secretCard:hover{
+  transform:translateY(-5px);
+  background:rgba(255,255,255,.07);
+}
+
+.secretNumber{
+  font-size:.65rem;
+  letter-spacing:.24em;
+  color:var(--blue-300);
+}
+
+.secretOpen{
+  border:0;
+  padding:0;
+
+  color:white;
+  text-align:left;
+  background:none;
+
+  font-family:Georgia,serif;
+  font-size:1.5rem;
+}
+
+.secretText{
+  margin-top:15px;
+
+  color:#c5dceb;
+  line-height:1.7;
+
+  display:none;
+}
+
+.secretCard.revealed .secretText{
+  display:block;
+}
+
+.secretCard.revealed .secretOpen{
+  color:var(--pink-soft);
+}
+
+
+/* =========================================================
+   CONTAGEM
+========================================================= */
+
+.countdownSection{
+  background:
+    linear-gradient(
+      180deg,
+      #092640,
+      #071d34
+    );
+}
+
+.countdownBox{
+  padding:clamp(28px,6vw,60px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:30px;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(122,185,223,.12),
+      transparent 27%
+    ),
+    rgba(255,255,255,.035);
+
+  box-shadow:var(--shadow);
+}
+
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+
+  margin-top:40px;
+}
+
+.timeBox{
+  padding:22px 10px;
+
+  text-align:center;
+
+  border-radius:20px;
+  background:rgba(255,255,255,.045);
+}
+
+.timeNumber{
+  display:block;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2rem,7vw,4rem);
+}
+
+.timeLabel{
+  margin-top:6px;
+
+  display:block;
+
+  font-size:.65rem;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+
+  color:#a8c7da;
+}
+
+
+/* =========================================================
+   ÁREA BLOQUEADA
+========================================================= */
+
+.lockedSection{
+  min-height:90svh;
+
+  display:flex;
+  align-items:center;
+
+  background:
+    linear-gradient(
+      180deg,
+      #071d34,
+      #041321
+    );
+}
+
+.lockedCard{
+  width:min(720px,100%);
+  margin:auto;
+
+  text-align:center;
+
+  padding:clamp(35px,7vw,70px);
+
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:30px;
+
+  background:
+    rgba(255,255,255,.035);
+}
+
+.lockIcon{
+  width:66px;
+  height:66px;
+
+  margin:0 auto 25px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:50%;
+
+  font-size:1.4rem;
+}
+
+.lockedCard h2{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(2.4rem,7vw,5rem);
+  font-weight:400;
+}
+
+.lockedCard p{
+  max-width:560px;
+
+  margin:22px auto 0;
+
+  line-height:1.8;
+  color:#b9d0df;
+}
+
+
+/* =========================================================
+   ANIVERSÁRIO
+========================================================= */
+
+#birthdayWorld{
+  display:none;
+
+  min-height:100svh;
+
+  align-items:center;
+  text-align:center;
+
+  overflow:hidden;
+
+  color:#20384a;
+
+  background:
+    linear-gradient(
+      180deg,
+      #cdeaff,
+      #a8d8f3 45%,
+      #f8d995
+    );
+}
+
+#birthdayWorld.active{
+  display:flex;
+}
+
+.birthdaySun{display:none !important;
+  position:absolute;
+
+  width:340px;
+  aspect-ratio:1;
+
+  top:-70px;
+  right:-80px;
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #fffde4,
+      #ffd779 58%,
+      #f3b850
+    );
+
+  box-shadow:
+    0 0 100px rgba(255,216,128,.48);
+}
+
+.birthdayContent{
+  position:relative;
+  z-index:3;
+
+  width:min(800px,calc(100% - 38px));
+  margin:auto;
+}
+
+.birthdayContent h2{
+  margin:0;
+
+  font-family:Georgia,serif;
+  font-size:clamp(3rem,10vw,7rem);
+  font-weight:400;
+}
+
+.birthdayContent p{
+  max-width:590px;
+
+  margin:25px auto;
+
+  line-height:1.8;
+}
+
+.finalPlaceholder{
+  margin-top:40px;
+  padding:24px;
+
+  border:1px dashed rgba(32,56,74,.35);
+  border-radius:18px;
+
+  font-size:.8rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+  padding:45px 20px 65px;
+
+  text-align:center;
+
+  color:#84aac3;
+  background:#041321;
+
+  font-family:Georgia,serif;
+}
+
+
+/* =========================================================
+   ANIMAÇÃO DE APARECIMENTO
+========================================================= */
+
+.reveal{
+  opacity:0;
+  transform:translateY(35px);
+
+  transition:
+    opacity .85s ease,
+    transform .85s ease;
+}
+
+.reveal.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+
+/* =========================================================
+   RESPONSIVO
+========================================================= */
+
+@media(max-width:800px){
+
+  .sunQuote{
+    grid-template-columns:1fr;
+  }
+
+  .sunOrb{
+    width:180px;
+  }
+
+  .bookMoment,
+  .bookMoment:nth-child(even){
+    margin-left:0;
+
+    grid-template-columns:100px 1fr;
+  }
+
+  .bookShape{
+    width:88px;
+    height:125px;
+  }
+
+  .secretGrid{
+    grid-template-columns:1fr;
+  }
+
+  .scrapContent{
+    grid-template-columns:1fr;
+  }
+
+  .poemCard{
+    padding:52px 30px 42px 38px;
+  }
+
+  .poemText{
+    font-size:16px;
+  }
+
+  .kittyPixelArt{
+    margin:auto auto 30px;
+  }
+.musicInfo{
+    display:none;
+  }
+
+  .musicPlayer{
+    padding:7px;
+  }
+
+}
+
+
+@media(max-width:600px){
+
+  .content{
+    width:min(100% - 28px,1100px);
+  }
+
+  .lockCard{
+    padding:27px 21px;
+    border-radius:24px;
+  }
+
+  .passwordArea{
+    flex-direction:column;
+  }
+
+  #passwordInput{
+    width:100%;
+    flex:none;
+  }
+
+  .enterBtn{
+    width:100%;
+    height:52px;
+  }
+
+  .hero{
+    min-height:100svh;
+  }
+
+  .heroContent{
+    padding-top:40px;
+    padding-bottom:38vh;
+  }
+
+  .hero h1{
+    font-size:clamp(3rem,15vw,5rem);
+  }
+
+  .moon{
+    right:9%;
+    top:9%;
+  }
+.section{
+    padding:95px 0;
+  }
+
+  .bookMoment{
+    grid-template-columns:1fr;
+  }
+
+  .bookShape{
+    width:100px;
+    height:140px;
+  }
+
+  .countdown{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .envelope{
+    right:10px;
+    top:-42px;
+
+    transform:scale(.8) rotate(7deg);
+  }
+
+  .letterPaper{
+    border-radius:6px;
+  }
+
+  .letterPaper::before{
+    left:20px;
+  }
+
+}
+
+
+@media(max-width:390px){
+
+  .hero h1{
+    font-size:2.85rem;
+  }
+
+  .heroText{
+    font-size:.92rem;
+  }
+.countdownBox{
+    padding:25px 15px;
+  }
+
+}
+
+
+/* acessibilidade */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+  }
+
+}
+
+
+/* =========================================================
+   FUNDO GLOBAL — céu estrelado inspirado no código enviado
+========================================================= */
+#fallingStars{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  pointer-events:none;
+  display:block;
+}
+
+html,body{
+  background:#0a0b18 !important;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,.035), transparent 28%),
+    radial-gradient(circle at 82% 70%, rgba(242,171,201,.035), transparent 30%),
+    linear-gradient(180deg,#0a0b18 0%,#0d0b1c 48%,#120d1c 100%);
+}
+
+#site, #site > *{ position:relative; z-index:1; }
+
+.hero,.stormSection,.storyRiver,.musicWorld,.scrapbook,.letterSection,footer,#birthdayWorld{
+  background:transparent !important;
+}
+
+.hero{min-height:100svh;}
+.moon,.sun,.planet,.mountains,.lake,.mist,.moonReflection,.waterLight,.celestePixelSky,.pixelMountain,.pixelCloud,.scrapPixelBackdrop{
+  display:none !important;
+}
+
+/* O gatinho é uma camada independente: passa por cima de textos, cards e cenário. */
+#scamp-cat{
+  position:fixed !important;
+  z-index:2147483647 !important;
+  pointer-events:none !important;
+}
+
+/* Mantém os papéis claros como pontos de contraste. */
+.scrapPaper,.letterPaper{background-color:#fffafc;}
+
+/* Referência visual de livro: discreta, sem virar mais um card. */
+.bookReference{
+  position:relative;
+  width:min(190px,100%);
+  margin:28px 0 0;
+  padding:14px 16px 13px;
+  border:1px solid rgba(205,157,179,.55);
+  border-radius:10px;
+  background:rgba(255,255,255,.72);
+  box-shadow:6px 7px 0 rgba(226,188,205,.28);
+  transform:rotate(-1.5deg);
+}
+.bookReference::before{
+  content:"";
+  position:absolute;
+  left:15px; top:-7px;
+  width:58px; height:9px;
+  background:#e9bfd1;
+  transform:rotate(-2deg);
+}
+.bookReferenceBook{
+  position:relative;
+  height:54px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  margin-bottom:8px;
+}
+.bookReferenceBook::before,
+.bookReferenceBook::after{
+  content:"";
+  width:65px;
+  height:48px;
+  background:linear-gradient(145deg,#fff,#f3e9ed);
+  border:1px solid #d8bcc8;
+  box-shadow:inset 0 0 0 3px rgba(255,255,255,.65);
+}
+.bookReferenceBook::before{
+  transform:skewY(4deg);
+  border-radius:5px 1px 1px 5px;
+  border-right:0;
+}
+.bookReferenceBook::after{
+  transform:skewY(-4deg);
+  border-radius:1px 5px 5px 1px;
+  border-left:0;
+}
+.bookReferenceNumber{
+  position:absolute;
+  left:50%; bottom:7px;
+  transform:translateX(-50%);
+  font:700 10px Georgia,serif;
+  color:#a75c7d;
+  letter-spacing:.08em;
+}
+.bookReference small{
+  display:block;
+  color:#8d6878;
+  font-size:.68rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+
+@media(max-width:800px){
+  .bookReference{margin-left:auto;margin-right:auto;}
+}
+
+
+/* =========================================================
+   NOVO UNIVERSO — PRETO + CHUVA DE ESTRELAS
+   ========================================================= */
+html, body{
+  background:#000 !important;
+}
+body{
+  color:#f5f5f5;
+  overflow-x:hidden;
+}
+#site{
+  background:#000 !important;
+  position:relative;
+}
+#site::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.035), transparent 22%),
+    radial-gradient(circle at 78% 68%, rgba(242,171,201,.025), transparent 24%);
+}
+.hero, .section, .musicWorld, .scrapbook, .letterSection{
+  background:#000 !important;
+}
+.hero{
+  position:relative;
+  isolation:isolate;
+}
+.moon,.mountains,.lake,.mist,.moonReflection,.waterLight{
+  display:none !important;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+  background:radial-gradient(ellipse at center, transparent 0 45%, rgba(0,0,0,.42) 100%);
+}
+.fallingStars{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
+.fallingStar{
+  position:absolute;
+  top:-12vh;
+  width:2px;
+  height:2px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 0 7px rgba(255,255,255,.85);
+  opacity:0;
+  animation:starFall linear infinite;
+}
+.fallingStar.pink{
+  background:#f2abc9;
+  box-shadow:0 0 9px rgba(242,171,201,.9);
+}
+.fallingStar.long{
+  width:2px;
+  height:14px;
+  border-radius:2px;
+  background:linear-gradient(to bottom, transparent, #fff);
+  box-shadow:0 0 8px rgba(255,255,255,.55);
+}
+@keyframes starFall{
+  0%{transform:translate3d(0,-12vh,0) rotate(15deg);opacity:0;}
+  8%{opacity:.85;}
+  75%{opacity:.7;}
+  100%{transform:translate3d(-7vw,112vh,0) rotate(15deg);opacity:0;}
+}
+/* remove remnants of the former blue atmosphere */
+.musicGlow,.scrapPixelBackdrop{
+  opacity:.18 !important;
+  filter:grayscale(1) !important;
+}
+.musicWorld{
+  background:#000 !important;
+}
+.neonCard{
+  background:rgba(12,12,12,.88) !important;
+  border-color:rgba(242,171,201,.2) !important;
+}
+
+</style>
+
+<style id="v11-black-adjustments">
+:root{
+  --bg:#000 !important;
+  --background:#000 !important;
+  --navy:#000 !important;
+  --deep:#000 !important;
+  --blue:#000 !important;
+  --sky:#000 !important;
+}
+html,body{
+  background:#000 !important;
+  background-color:#000 !important;
+}
+#site{
+  background:#000 !important;
+}
+.hero,
+.section,
+.musicWorld,
+.scrapbook,
+.letterSection,
+#birthdayWorld{
+  background:#000 !important;
+  background-color:#000 !important;
+}
+/* Remove the old celestial/blue scenery entirely */
+.moon,
+.sun,
+.planet,
+.mountains,
+.lake,
+.mist,
+.moonReflection,
+.waterLight,
+.celestePixelSky,
+.pixelMountain,
+.pixelCloud,
+.scrapPixelBackdrop{
+  display:none !important;
+}
+/* Preserve white/pink content surfaces */
+.poemCard,
+.neonCard,
+.bookReference,
+.letterPaper,
+.memoryCard,
+.scrapbookCard{
+  /* intentionally not overridden */
+}
+</style>
+
+</head>
+
+
+<body>
+<canvas id="fallingStars" aria-hidden="true"></canvas>
+
+
+<!-- ======================================================
+     SENHA
+======================================================= -->
+
+<div id="lockScreen">
+
+  <div class="lockMist"></div>
+
+  <div class="lockCard">
+
+    <div class="lockTiny">
+      existe uma porta antes desse lugar
+    </div>
+
+    <h1>
+      A porta está fechada.
+    </h1>
+
+    <div class="riddle">
+
+      E para abri-la, você vai precisar de três palavras.
+
+      <br><br>
+
+      A primeira é pequena,
+      <br>
+      mas pode representar quem fala.
+
+      <br><br>
+
+      A segunda não pertence a ninguém sozinho.
+      <br>
+      É uma ponte entre duas pessoas.
+
+      <br><br>
+
+      A terceira é um sentimento
+      <br>
+      que pode incendiar o peito,
+      <br>
+      acalmar uma tempestade
+      <br>
+      ou fazer alguém sorrir sem perceber.
+
+      <br><br>
+
+      Juntas, elas não formam uma pergunta.
+      <br>
+      Não formam um pedido.
+
+      <br><br>
+
+      <strong>
+        Formam uma declaração.
+      </strong>
+
+    </div>
+
+
+    <div class="frenchHint">
+      <span>FR</span>
+
+      <span>
+        existe apenas um detalhe:
+        você não vai encontrá-la em português.
+      </span>
+    </div>
+
+
+    <div class="passwordArea">
+
+      <input
+        id="passwordInput"
+        type="text"
+        autocomplete="off"
+        autocapitalize="none"
+        spellcheck="false"
+        placeholder="escreva a frase..."
+      >
+
+      <button
+        id="enterButton"
+        class="enterBtn"
+        type="button"
+      >
+        entrar
+      </button>
+
+    </div>
+
+    <div id="errorMessage"></div>
+
+    <div id="extraHint">
+      Uma última pista: talvez você já tenha ouvido
+      essa frase em algum filme, música ou história de amor.
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     TRANSIÇÃO
+======================================================= -->
+
+<div id="transitionScreen">
+
+  <div class="transitionWord">
+    JE T'AIME
+  </div>
+
+</div>
+
+
+<!-- ======================================================
+     PLAYER
+======================================================= -->
+
+<div
+  id="musicPlayer"
+  class="musicPlayer hidden"
+>
+
+  <button
+    id="musicButton"
+    class="musicButton"
+    aria-label="Tocar ou pausar música"
+  >
+    ▶
+  </button>
+
+  <div class="musicInfo">
+    <strong>Get You</strong>
+    Daniel Caesar
+  </div>
+
+</div>
+
+
+<audio
+  id="backgroundMusic"
+  preload="auto"
+  loop
+  playsinline
+>
+  <source
+    src="assets/get-you.mp3"
+    type="audio/mpeg"
+  >
+</audio>
+
+
+<!-- ======================================================
+     SITE
+======================================================= -->
+
+<!-- Gatinho: camada independente do conteúdo e do scroll -->
+  <div id="scamp-cat" aria-hidden="true"></div>
+
+<main id="site">
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="content heroContent">
+
+    <div class="heroEyebrow">
+      você descobriu a chave
+    </div>
+
+    <h1>
+      agora pode
+      <span>entrar.</span>
+    </h1>
+
+    <p class="heroText">
+      Eu imaginei esse lugar como aqueles momentos
+      em que tudo fica silencioso por alguns segundos.
+      Um lago, algumas luzes refletindo na água e
+      alguém que você gostaria que estivesse ali com você.
+    </p>
+
+    <div class="scrollHint">
+
+      <span class="scrollLine"></span>
+
+      continue descendo
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- QUANDO O MUNDO PESA -->
+<section class="section stormSection">
+  <div class="content">
+    <div class="stormIntro reveal">
+      <span class="sectionIndex">uma coisa que pensei sobre você</span>
+      <h2 class="sectionTitle">Tem coisas que deixam o mundo mais leve.</h2>
+      <p class="sectionText">
+        Nem todo carinho precisa chegar fazendo barulho.
+        Às vezes ele aparece devagar, no meio de um dia difícil,
+        e muda a forma como a gente enxerga tudo ao redor.
+      </p>
+    </div>
+
+    <div class="stormScene reveal">
+      <div class="stormRain" aria-hidden="true"></div>
+      <div class="stormWindow">
+        <span class="windowLabel">quando tudo fica pesado</span>
+        <p>
+          Algumas pessoas não precisam consertar a tempestade.
+          Só precisam estar ali para fazer a gente lembrar
+          que ela também passa.
+        </p>
+        <span class="windowSignature">e você tem esse efeito em mim.</span>
+      </div>
+      <div class="stormSpark sparkOne" aria-hidden="true"></div>
+      <div class="stormSpark sparkTwo" aria-hidden="true"></div>
+      <div class="stormSpark sparkThree" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- HISTÓRIAS / POEMA -->
+
+<section class="section storyRiver">
+
+  <div class="content">
+
+    <div class="storyIntro reveal">
+
+      <span class="sectionIndex">
+        entre páginas, rodas e melodias
+      </span>
+
+      <h2 class="sectionTitle">
+        Tem um pedacinho seu em tudo que virou meu carinho.
+      </h2>
+
+      <p class="sectionText">
+        Acho que você foi entrando na minha vida desse jeito:
+        devagar, pelos detalhes, até algumas coisas começarem
+        a ter um significado que só nós dois entendemos.
+      </p>
+
+    </div>
+
+    <div class="poemCard reveal">
+
+      <div class="poemText">
+
+        <p>
+          Tem uma coisa engraçada em gostar de você:
+          depois de um tempo, parece que você começa a morar
+          nas coisas mais pequenas do meu dia.
+        </p>
+
+        <p>
+          Eu vejo um livro e lembro de você.
+          Não só pelas histórias que você gosta,
+          mas por imaginar você ali, virando uma página,
+          encontrando alguma frase bonita e guardando ela
+          do seu jeitinho. E talvez eu goste ainda mais
+          da ideia de que, em algum cantinho, existe uma página
+          que poderia ser nossa.
+        </p>
+
+        <p>
+          Tem também o som dos patins.
+          Aquela sensação de movimento, de liberdade,
+          de sair do lugar mesmo sem saber exatamente
+          onde vai chegar. Acho bonito pensar em você assim:
+          um pouco delicada, um pouco teimosa,
+          e completamente impossível de não querer acompanhar.
+        </p>
+
+        <p>
+          E tem a música.
+          Algumas músicas agora parecem guardar pedaços
+          de conversas, noites e pensamentos que eu tive sobre você.
+          Às vezes uma música começa e eu nem preciso tentar lembrar:
+          você simplesmente aparece.
+        </p>
+
+        <p>
+          E talvez o detalhe que mais me faz sorrir seja esse
+          nome que você me deu: <strong>coelhinho</strong>.
+          Eu gosto de ser seu coelhinho.
+          Gosto do carinho escondido nessa palavra,
+          daquele jeitinho íntimo que faz uma palavra comum
+          parecer ter sido inventada só para nós dois.
+        </p>
+
+        <p>
+          Então, quando eu falo que você está nos detalhes,
+          não é só uma frase bonita.
+          É porque você realmente ficou.
+          Ficou nos livros, nas músicas, nos patins,
+          nas coisas fofas que lembram você,
+          e principalmente naquele sorriso meio bobo
+          que aparece quando eu penso que, de alguma forma,
+          sou o seu coelhinho.
+        </p>
+
+        <p class="poemFinal">
+          Talvez seja isso que eu queria que você soubesse:
+          eu não gosto só das grandes coisas em você.
+          <br>
+          Eu gosto de tudo aquilo que, sem perceber,
+          fez você virar um lugar tão bonito para mim.
+        </p>
+
+      </div>
+
+      <div class="poemReferences" aria-label="Pequenas referências">
+        <span>livros</span>
+        <span>patins</span>
+        <span>música</span>
+        <span>coelhinho</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- REFERÊNCIA MUSICAL / MATUÊ -->
+
+<section class="section musicWorld">
+
+  <div class="musicGlow"></div>
+  
+    
+    
+    
+    <div class="pixelSnow"></div>
+  </div>
+
+  <div class="content">
+
+    <div class="neonCard reveal">
+
+      <span class="sectionIndex">
+        algumas noites têm trilha sonora
+      </span>
+
+      <h2 class="neonTitle">
+        Algumas músicas têm o seu nome.
+      </h2>
+
+      <p class="sectionText">
+
+        Tem músicas que a gente simplesmente escuta.
+        E tem aquelas que, depois de alguém,
+        nunca mais são apenas músicas.
+
+        <br><br>
+
+        Talvez você nem saiba,
+        mas existem melodias que agora carregam
+        um pouco da lembrança de você.
+        Uma noite, uma conversa,
+        uma letra qualquer,
+        aquele momento em que eu estava pensando em você
+        sem nem perceber.
+
+        <br><br>
+
+        E quando a música volta,
+        você volta junto.
+
+      </p>
+
+      <div class="neonLabel">
+
+        <span class="neonDot"></span>
+
+        30 • universo particular
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SCRAPBOOK -->
+
+<section class="section scrapbook">
+
+  <span class="scrapPixelStar ps2"></span><span class="scrapPixelStar ps3"></span>
+    <span class="scrapCloud sc1"></span><span class="scrapCloud sc2"></span>
+    <span class="scrapHill sh1"></span><span class="scrapHill sh2"></span>
+  </div>
+
+  <div class="content">
+
+
+    <div class="scrapPaper reveal">
+
+      <div class="tape one"></div>
+      <div class="tape two"></div>
+
+
+      <div class="scrapContent">
+
+
+        <div class="kittyPixelArt reveal" aria-label="Pixel art da Hello Kitty">
+          <canvas id="helloKittyPixel" width="1000" height="1000"></canvas>
+        </div>
+
+
+        <div class="scrapText">
+
+          <h2>
+            Você acabou ficando nos detalhes.
+          </h2>
+
+          <p>
+            Não são grandes coisas que me fazem lembrar de você.
+            Às vezes é uma página de um livro,
+            um par de patins passando por mim,
+            uma música tocando no momento errado,
+            ou até um coelhinho em algum canto qualquer.
+
+            <br><br>
+
+            São coisas pequenas. Quase bobas.
+            Mas, de algum jeito, todas conseguem me levar até você.
+
+            <br><br>
+
+            Acho bonito pensar que alguém pode deixar
+            pequenos pedaços de si espalhados pelo mundo
+            sem sequer perceber.
+
+            <br><br>
+
+            E talvez seja isso que eu mais gosto:
+            saber que, mesmo quando você não está aqui,
+            ainda existem coisas capazes de me fazer lembrar de você.
+          </p>
+
+          <div class="bookReference" aria-label="Pequena referência a um livro">
+            <div class="bookReferenceBook" aria-hidden="true">
+              <span class="bookReferenceNumber">13</span>
+            </div>
+            <small>uma página que ficou comigo</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CARTA -->
+
+<section class="section letterSection">
+
+  <div class="content">
+
+
+    <div class="sectionHeader reveal">
+
+      <span class="sectionIndex">
+        talvez a parte mais importante daqui
+      </span>
+
+      <h2 class="sectionTitle">
+        Uma carta para você.
+      </h2>
+
+    </div>
+
+
+    <div class="letterScene reveal">
+
+
+      <div class="envelope">
+
+        <div class="envelopeHeart">
+          ♡
+        </div>
+
+      </div>
+
+
+      <article class="letterPaper">
+
+
+        <h2 class="letterTitle">
+          meu amor,
+        </h2>
+
+
+        <div class="letterBody">
+
+
+          <p>
+            eu fiquei pensando muito no que escrever aqui,
+            porque quando é sobre você parece que qualquer
+            palavra fica pequena.
+          </p>
+
+
+          <p>
+            eu poderia falar que você é linda,
+            que você é incrível,
+            que eu gosto de você,
+            mas sinto que tudo isso ainda não explica
+            direito o que acontece quando penso em você.
+          </p>
+
+
+          <p class="pause">
+            tem alguma coisa em você que me prende.
+          </p>
+
+
+          <p>
+            não sei se é seu jeito,
+            seu sorriso,
+            a maneira que você fala das coisas que gosta,
+            ou simplesmente a forma que você consegue existir
+            e fazer eu querer ficar olhando mais um pouco.
+          </p>
+
+
+          <p>
+            e talvez você nem perceba,
+            mas existem pequenas coisas suas que ficam em mim.
+          </p>
+
+
+          <p>
+            uma conversa,
+            uma risada,
+            uma coisa que você falou sem dar importância...
+            às vezes eu lembro depois e sorrio sozinho.
+          </p>
+
+
+          <p>
+            acho bonito isso.
+          </p>
+
+
+          <p>
+            acho bonito quando alguém consegue ocupar
+            um espaço dentro da gente
+            sem precisar fazer esforço.
+          </p>
+
+
+          <p class="pause">
+            você fez isso comigo.
+          </p>
+
+
+          <p>
+            e eu não quero que você pense que eu estou
+            escrevendo isso simplesmente por causa
+            de uma data.
+          </p>
+
+
+          <p>
+            eu escreveria isso em qualquer outro dia também.
+          </p>
+
+
+          <p>
+            porque você é uma dessas pessoas
+            que eu tenho vontade de guardar.
+          </p>
+
+
+          <p>
+            não como quem prende alguma coisa,
+            mas como quem guarda uma lembrança bonita
+            com medo de esquecer algum detalhe.
+          </p>
+
+
+          <p>
+            eu gosto de imaginar que,
+            mesmo quando a vida estiver acontecendo rápido demais,
+            vão existir momentos em que eu vou lembrar de você
+            e tudo vai ficar um pouco mais calmo.
+          </p>
+
+
+          <p>
+            talvez seja por isso que eu gosto tanto
+            dessa ideia de você ser o sol
+            no meio da tempestade.
+          </p>
+
+
+          <p>
+            porque tem pessoas que chegam fazendo barulho.
+          </p>
+
+
+          <p>
+            e tem pessoas que simplesmente chegam
+            e deixam tudo mais leve.
+          </p>
+
+
+          <p class="pause">
+            você é assim para mim.
+          </p>
+
+
+          <p>
+            e eu espero que você consiga enxergar em você
+            pelo menos uma parte da garota
+            que eu enxergo.
+          </p>
+
+
+          <p>
+            porque eu vejo alguém maravilhosa.
+          </p>
+
+
+          <p>
+            alguém que merece ser amada nos detalhes,
+            admirada sem precisar pedir
+            e lembrada mesmo quando não está por perto.
+          </p>
+
+
+          <p>
+            e se algum dia você esquecer
+            o quanto é especial,
+            eu espero que volte aqui.
+          </p>
+
+
+          <p>
+            olha para esse lugar,
+            olha para todas essas pequenas coisas
+            que eu coloquei aqui
+            e lembra que alguém parou
+            para pensar em você em cada uma delas.
+          </p>
+
+
+          <p>
+            talvez eu nunca consiga explicar completamente
+            o que você significa para mim.
+          </p>
+
+
+          <p>
+            mas talvez nem tudo precise ser explicado.
+          </p>
+
+
+          <p>
+            algumas pessoas a gente simplesmente sente.
+          </p>
+
+
+          <p class="pause">
+            e você...
+            <br>
+            eu sinto.
+          </p>
+
+
+          <p>
+            com carinho,
+            com desejo,
+            com admiração
+            e com todo esse sentimento
+            que ainda nem sei direito como chamar.
+          </p>
+
+
+          <p class="signature">
+            meu amor. ♡
+          </p>
+
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- SEGREDOS -->
+
+<section class="section secretSection">
+
+  <div class="content">
+
+
+    <div class="sectionHeader reveal">
+
+      <span class="sectionIndex">
+        você ainda não viu tudo
+      </span>
+
+      <h2 class="sectionTitle">
+        Algumas coisas ficam escondidas.
+      </h2>
+
+      <p class="sectionText">
+        toque em cada uma.
+      </p>
+
+    </div>
+
+
+    <div class="secretGrid">
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 01
+        </span>
+
+        <button class="secretOpen">
+          abre aqui
+        </button>
+
+        <div class="secretText">
+          Tem gente que ilumina um lugar.
+          Você ilumina quem está nele.
+        </div>
+
+      </article>
+
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 02
+        </span>
+
+        <button class="secretOpen">
+          talvez esse seja meu favorito
+        </button>
+
+        <div class="secretText">
+          Espero que por alguns minutos aqui
+          você consiga se enxergar
+          do jeito bonito que eu te enxergo.
+        </div>
+
+      </article>
+
+
+
+      <article class="secretCard reveal">
+
+        <span class="secretNumber">
+          SEGREDO 03
+        </span>
+
+        <button class="secretOpen">
+          mais um
+        </button>
+
+        <div class="secretText">
+          Você tem uma maneira bonita de existir.
+          Acho que talvez você nem perceba isso.
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONTAGEM -->
+
+<section class="section countdownSection">
+
+  <div class="content">
+
+
+    <div class="countdownBox reveal">
+
+
+      <span class="sectionIndex">
+        21 de setembro
+      </span>
+
+
+      <h2 class="sectionTitle">
+        Ainda falta um pouco.
+      </h2>
+
+
+      <p class="sectionText">
+
+        Algumas coisas ficam ainda mais bonitas
+        quando acontecem exatamente
+        no momento certo.
+
+      </p>
+
+
+      <div class="countdown">
+
+        <div class="timeBox">
+
+          <span
+            id="days"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            dias
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="hours"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            horas
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="minutes"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            minutos
+          </span>
+
+        </div>
+
+
+        <div class="timeBox">
+
+          <span
+            id="seconds"
+            class="timeNumber"
+          >
+            00
+          </span>
+
+          <span class="timeLabel">
+            segundos
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- BLOQUEADO -->
+
+<section
+  id="lockedArea"
+  class="lockedSection"
+>
+
+  <div class="content">
+
+    <div class="lockedCard reveal">
+
+      <div class="lockIcon">
+        ♡
+      </div>
+
+      <span class="sectionIndex">
+        ainda não
+      </span>
+
+      <h2>
+        Essa parte ainda está fechada.
+      </h2>
+
+      <p>
+        Algumas coisas precisam acontecer
+        no momento certo.
+        Volte aqui no dia 21.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ANIVERSÁRIO -->
+
+<section id="birthdayWorld">
+<div class="birthdayContent">
+
+    <span class="sectionIndex">
+      finalmente
+    </span>
+
+    <h2>
+      Hoje é o seu dia.
+    </h2>
+
+    <p>
+      Hoje não existe contagem regressiva.
+      Não existe porta fechada.
+      Só existe você,
+      esse lugar
+      e tudo que eu queria que você sentisse
+      enquanto estivesse aqui.
+    </p>
+
+
+    <div class="finalPlaceholder">
+      a surpresa final será colocada aqui depois
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer>
+  um universo inteiro, só nosso. ♡
+</footer>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const lockScreen =
+  document.getElementById("lockScreen");
+
+const transitionScreen =
+  document.getElementById("transitionScreen");
+
+const site =
+  document.getElementById("site");
+
+const passwordInput =
+  document.getElementById("passwordInput");
+
+const enterButton =
+  document.getElementById("enterButton");
+
+const errorMessage =
+  document.getElementById("errorMessage");
+
+const extraHint =
+  document.getElementById("extraHint");
+
+const music =
+  document.getElementById("backgroundMusic");
+
+const musicButton =
+  document.getElementById("musicButton");
+
+const musicPlayer =
+  document.getElementById("musicPlayer");
+
+
+/* =========================================================
+   SENHA
+========================================================= */
+
+let wrongAttempts = 0;
+
+
+function normalizePassword(value){
+
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[’‘´`]/g,"'")
+    .replace(/\s+/g," ");
+
+}
+
+
+function checkPassword(){
+
+  const value =
+    normalizePassword(passwordInput.value);
+
+  const acceptedPasswords = [
+    "je t'aime",
+    "jetaime",
+    "je t aime"
+  ];
+
+
+  if(acceptedPasswords.includes(value)){
+
+    unlockSite();
+
+  }else{
+
+    wrongAttempts++;
+
+    errorMessage.textContent =
+      "não foi dessa vez... tenta pensar na declaração.";
+
+    passwordInput.select();
+
+    if(wrongAttempts >= 2){
+      extraHint.classList.add("visible");
+    }
+
+  }
+
+}
+
+
+function unlockSite(){
+
+  passwordInput.blur();
+
+  lockScreen.style.display = "none";
+
+  transitionScreen.style.display = "flex";
+
+
+  setTimeout(()=>{
+
+    transitionScreen.style.display = "none";
+
+    site.style.display = "block";
+
+    musicPlayer.classList.remove("hidden");
+
+
+    music.play()
+      .then(()=>{
+        musicButton.textContent = "❚❚";
+      })
+      .catch(()=>{
+        musicButton.textContent = "▶";
+      });
+
+
+    startRevealObserver();
+
+    checkBirthday();
+
+    window.scrollTo(0,0);
+
+  },3000);
+
+}
+
+
+enterButton.addEventListener(
+  "click",
+  checkPassword
+);
+
+
+passwordInput.addEventListener(
+  "keydown",
+  event=>{
+
+    if(event.key === "Enter"){
+      checkPassword();
+    }
+
+  }
+);
+
+
+/*
+  No celular não forçamos o teclado.
+  No computador podemos focar automaticamente.
+*/
+
+window.addEventListener("load",()=>{
+
+  if(window.innerWidth > 700){
+
+    setTimeout(()=>{
+      passwordInput.focus();
+    },400);
+
+  }
+
+});
+
+
+/* Gatinho interativo estilo scamp-cat */
+(function () {
+  const cat = document.getElementById('scamp-cat');
+  if (!cat) return;
+
+  // Escolha a cor: gray | ginger | white
+  const SHEET = 'https://raw.githubusercontent.com/LordAizen1/scamp-cat/main/assets/sprites/cat_gray.png';
+  const SCALE = 2;           // 2 = 64px, 1 = 32px, 3 = 96px...
+  const FRAME = 32;
+
+  // Coordenadas exatas tiradas do código do scamp (main.rs)
+  const ANIMS = {
+    wash:        { frames: [[0,1152],[32,1152],[64,1152],[96,1152],[128,1152],[160,1152],[192,1152],[224,1152]], ms: 250 },
+    walkRight:   { frames: [[0,192],[32,192],[64,192],[96,192],[128,192],[160,192],[192,192],[224,192]], ms: 100 },
+    walkLeft:    { frames: [[0,224],[32,224],[64,224],[96,224],[128,224],[160,224],[192,224],[224,224]], ms: 100 },
+    walkUp:      { frames: [[0,160],[32,160],[64,160],[96,160]], ms: 100 },
+    walkDown:    { frames: [[0,128],[32,128],[64,128],[96,128]], ms: 100 },
+    sleepCurl:   { frames: [[0,512]], ms: 1000 },
+    yawn:        { frames: [[0,1024],[32,1024],[64,1024],[96,1024],[128,1024],[160,1024],[192,1024],[224,1024]], ms: 250 },
+    sleepLoaf:   { frames: [[0,384]], ms: 1000 },
+    sleepHead:   { frames: [[0,448]], ms: 1000 },
+    sleepStretch:{ frames: [[0,576]], ms: 1000 },
+    washLie:     { frames: [[0,1216],[32,1216],[64,1216],[96,1216],[128,1216],[160,1216],[192,1216]], ms: 250 },
+    scratch:     { frames: [[0,1280],[32,1280],[64,1280],[96,1280],[128,1280],[160,1280],[192,1280],[224,1280]], ms: 250 },
+  };
+
+  const IDLE_ANIMS = ['wash', 'yawn', 'washLie', 'scratch'];
+  const SLEEP_ANIMS = ['sleepCurl', 'sleepLoaf', 'sleepHead', 'sleepStretch'];
+
+  let x = window.innerWidth - 80;
+  let y = window.innerHeight - 100;
+  let targetX = x, targetY = y;
+  let state = 'idle';
+  let animName = 'wash';
+  let frameIdx = 0;
+  let lastFrame = 0;
+  let idleTicks = 0;
+  let pause = 0;
+
+  cat.style.backgroundImage = `url(${SHEET})`;
+  cat.style.width = `${FRAME * SCALE}px`;
+  cat.style.height = `${FRAME * SCALE}px`;
+  cat.style.backgroundSize = `${352 * SCALE}px ${1696 * SCALE}px`;
+
+  function setFrame() {
+    const anim = ANIMS[animName];
+    const [sx, sy] = anim.frames[frameIdx % anim.frames.length];
+    cat.style.backgroundPosition = `-${sx * SCALE}px -${sy * SCALE}px`;
+  }
+
+  function pickNewTarget() {
+    const maxX = window.innerWidth - FRAME * SCALE - 10;
+    const maxY = window.innerHeight - FRAME * SCALE - 10;
+    targetX = Math.random() * maxX;
+    targetY = Math.random() * maxY;
+    pause = Math.random() < 0.25 ? 250 + Math.random() * 250 : 20 + Math.random() * 40;
+  }
+
+  function update(now) {
+    // animação de frames
+    const anim = ANIMS[animName];
+    if (now - lastFrame > anim.ms) {
+      frameIdx = (frameIdx + 1) % anim.frames.length;
+      lastFrame = now;
+      setFrame();
+    }
+
+    if (pause > 0) {
+      pause--;
+      requestAnimationFrame(update);
+      return;
+    }
+
+    const dx = targetX - x;
+    const dy = targetY - y;
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < 2) {
+      // chegou
+      state = 'idle';
+      idleTicks++;
+      if (idleTicks > 80) {
+        animName = SLEEP_ANIMS[Math.floor(Math.random() * SLEEP_ANIMS.length)];
+      } else {
+        animName = IDLE_ANIMS[Math.floor(Math.random() * IDLE_ANIMS.length)];
+      }
+      pickNewTarget();
+    } else {
+      idleTicks = 0;
+      const speed = 1.2;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        state = dx > 0 ? 'walkRight' : 'walkLeft';
+        animName = state;
+        x += Math.sign(dx) * speed;
+      } else {
+        state = dy > 0 ? 'walkDown' : 'walkUp';
+        animName = state;
+        y += Math.sign(dy) * speed;
+      }
+    }
+
+    cat.style.left = `${x}px`;
+    cat.style.top = `${y}px`;
+    requestAnimationFrame(update);
+  }
+
+  // inicia
+  pickNewTarget();
+  setFrame();
+  requestAnimationFrame(update);
+
+  // reage a resize
+  window.addEventListener('resize', () => {
+    x = Math.min(x, window.innerWidth - FRAME * SCALE);
+    y = Math.min(y, window.innerHeight - FRAME * SCALE);
+  });
+})();
+
+/* =========================================================
+   MÚSICA
+========================================================= */
+
+musicButton.addEventListener(
+  "click",
+  async ()=>{
+
+    if(music.paused){
+      try{
+        await music.play();
+        musicButton.textContent = "❚❚";
+      }catch(error){
+        console.warn("Não foi possível iniciar a música:", error);
+        musicButton.textContent = "▶";
+      }
+    }else{
+      music.pause();
+      musicButton.textContent = "▶";
+    }
+  }
+);
+
+music.addEventListener("play", ()=>{
+  musicButton.textContent = "❚❚";
+});
+
+music.addEventListener("pause", ()=>{
+  musicButton.textContent = "▶";
+});
+
+music.addEventListener("error", ()=>{
+  musicButton.textContent = "▶";
+  console.error("Erro ao carregar assets/get-you.mp3", music.error);
+});
+
+
+/* =========================================================
+   SEGREDOS
+========================================================= */
+
+document
+  .querySelectorAll(".secretCard")
+  .forEach(card=>{
+
+    const button =
+      card.querySelector(".secretOpen");
+
+    button.addEventListener(
+      "click",
+      ()=>{
+
+        card.classList.toggle("revealed");
+
+      }
+    );
+
+  });
+
+
+/* =========================================================
+   ANIMAÇÃO AO ROLAR
+========================================================= */
+
+function startRevealObserver(){
+
+  const observer =
+    new IntersectionObserver(
+      entries=>{
+
+        entries.forEach(entry=>{
+
+          if(entry.isIntersecting){
+
+            entry.target
+              .classList
+              .add("visible");
+
+            observer.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold:.12
+      }
+    );
+
+
+  document
+    .querySelectorAll(".reveal")
+    .forEach(element=>{
+
+      observer.observe(element);
+
+    });
+
+}
+
+
+/* =========================================================
+   CONTAGEM REGRESSIVA
+========================================================= */
+
+const birthdayDate =
+  new Date(
+    "2026-09-21T00:00:00-03:00"
+  );
+
+
+function updateCountdown(){
+
+  const now =
+    new Date();
+
+  const difference =
+    birthdayDate - now;
+
+
+  if(difference <= 0){
+
+    document.getElementById("days")
+      .textContent = "00";
+
+    document.getElementById("hours")
+      .textContent = "00";
+
+    document.getElementById("minutes")
+      .textContent = "00";
+
+    document.getElementById("seconds")
+      .textContent = "00";
+
+    checkBirthday();
+
+    return;
+
+  }
+
+
+  const days =
+    Math.floor(
+      difference /
+      (1000 * 60 * 60 * 24)
+    );
+
+
+  const hours =
+    Math.floor(
+      (
+        difference /
+        (1000 * 60 * 60)
+      ) % 24
+    );
+
+
+  const minutes =
+    Math.floor(
+      (
+        difference /
+        (1000 * 60)
+      ) % 60
+    );
+
+
+  const seconds =
+    Math.floor(
+      (
+        difference /
+        1000
+      ) % 60
+    );
+
+
+  document.getElementById("days")
+    .textContent =
+      String(days).padStart(2,"0");
+
+  document.getElementById("hours")
+    .textContent =
+      String(hours).padStart(2,"0");
+
+  document.getElementById("minutes")
+    .textContent =
+      String(minutes).padStart(2,"0");
+
+  document.getElementById("seconds")
+    .textContent =
+      String(seconds).padStart(2,"0");
+
+}
+
+
+updateCountdown();
+
+setInterval(
+  updateCountdown,
+  1000
+);
+
+
+/* =========================================================
+   LIBERAÇÃO DO DIA 21
+========================================================= */
+
+function checkBirthday(){
+
+  const now =
+    new Date();
+
+
+  if(now >= birthdayDate){
+
+    const lockedArea =
+      document.getElementById("lockedArea");
+
+    const birthdayWorld =
+      document.getElementById("birthdayWorld");
+
+
+    lockedArea.style.display = "none";
+
+    birthdayWorld.classList.add("active");
+
+  }
+
+}
+
+</script>
+
+
+<script>
+/*
+  Hello Kitty pixel art adaptada do Pen de danixia-torres:
+  https://codepen.io/danixia-torres/pen/PoOprYX
+  A arte original é desenhada por retângulos de 20px; aqui ela é
+  desenhada no canvas original e exibida responsivamente no scrapbook.
+*/
+(function(){
+  const canvas = document.getElementById('helloKittyPixel');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if(!ctx) return;
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.clearRect(0,0,1000,1000);
+
+  const pink = '#EDB1CA';
+  const yellow = '#FFDE00';
+  const brown = '#B18977';
+
+  ctx.fillStyle = brown;
+  const brownRects = [
+    [500,100,120,20],[480,80,20,20],[400,60,80,20],[360,80,40,20],[380,100,20,20],
+    [360,120,60,20],[420,140,40,40],[440,140,20,20],[360,200,60,20],[340,140,20,60],
+    [320,180,20,20],[340,220,20,20],[300,240,40,20],[280,220,20,20],[260,140,20,80],
+    [280,120,60,20],[280,80,20,40],[300,60,60,20],[620,80,80,20],[700,100,20,40],
+    [720,140,20,40],[700,180,20,40],[720,220,20,80],[700,300,60,20],[760,320,20,20],
+    [720,320,20,40],[680,360,60,20],[740,380,20,20],[700,380,20,20],[680,400,20,20],
+    [640,420,40,20],[260,360,60,20],[240,380,20,20],[280,380,20,20],[300,400,20,20],
+    [280,420,20,20],[320,420,40,20],[360,440,280,20],[260,320,20,40],[240,300,60,20],
+    [220,320,20,20],[260,240,20,60],[360,340,40,20],[600,340,40,20],[500,120,20,60],
+    [420,180,80,20]
+  ];
+  brownRects.forEach(r=>ctx.fillRect(...r));
+
+  ctx.fillStyle = pink;
+  const pinkRects = [
+    [340,380,40,20],[620,380,40,20],
+    [400,80,80,40],[420,120,80,20],[480,100,20,20],[460,140,40,20],[440,160,60,20],
+    [360,140,60,60],[280,140,60,40],[280,180,40,40],[320,200,40,20],[300,220,40,20]
+  ];
+  pinkRects.forEach(r=>ctx.fillRect(...r));
+
+  ctx.fillStyle = yellow;
+  ctx.fillRect(480,380,40,20);
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   CHUVA DE ESTRELAS CADENTES — versão cinematográfica
+   Campo de estrelas + meteoros com cauda em gradiente,
+   brilho volumétrico, núcleo quente e pequenas partículas.
+========================================================= */
+(function(){
+  const canvas=document.getElementById('fallingStars');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  if(!ctx) return;
+
+  let W=0,H=0,dpr=1,shooting=[],bgStars=[],last=performance.now();
+  const reduce=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const TAU=Math.PI*2;
+
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth; H=innerHeight;
+    canvas.width=Math.floor(W*dpr); canvas.height=Math.floor(H*dpr);
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    const count=reduce?75:240;
+    bgStars=Array.from({length:count},()=>({
+      x:Math.random()*W,
+      y:Math.random()*H,
+      r:Math.random()<.88 ? .55+Math.random()*.8 : 1.2+Math.random()*1.25,
+      a:.18+Math.random()*.72,
+      phase:Math.random()*TAU,
+      speed:.45+Math.random()*1.9
+    }));
+  }
+
+  function createShootingStar(){
+    // Nasce fora do canto superior/direito e cruza o céu na diagonal.
+    const angle=(135+Math.random()*12)*Math.PI/180;
+    const speed=12+Math.random()*10;
+    const length=105+Math.random()*115;
+    const size=.75+Math.random()*1.15;
+    const x=W*(.55+Math.random()*.65);
+    const y=-40+Math.random()*H*.48;
+    const life=0;
+    return {
+      x,y,angle,speed,length,size,life,
+      maxLife:72+Math.random()*55,
+      opacity:.72+Math.random()*.28,
+      hue:Math.random()<.82?'white':'pink',
+      phase:Math.random()*TAU,
+      dust:Array.from({length:7+Math.floor(Math.random()*7)},()=>({
+        d:Math.random(), a:.15+Math.random()*.5, r:.35+Math.random()*.8
+      }))
+    };
+  }
+
+  function drawMeteor(e,t,dt){
+    const dx=Math.cos(e.angle-Math.PI);
+    const dy=-Math.sin(e.angle-Math.PI);
+    const speed=e.speed*dt;
+    const lifeIn=Math.min(1,e.life/10);
+    const lifeOut=Math.min(1,(e.maxLife-e.life)/18);
+    const fade=Math.min(lifeIn,lifeOut);
+    const pulse=.92+.08*Math.sin(t*8+e.phase);
+    const alpha=e.opacity*fade*pulse;
+
+    // Cauda longa com gradiente: transparente na ponta, intensa perto do núcleo.
+    const tx=e.x-dx*e.length;
+    const ty=e.y-dy*e.length;
+    const grad=ctx.createLinearGradient(tx,ty,e.x,e.y);
+    grad.addColorStop(0,'rgba(255,255,255,0)');
+    grad.addColorStop(.52,`rgba(235,240,255,${.10*alpha})`);
+    grad.addColorStop(.82,`rgba(255,240,250,${.32*alpha})`);
+    grad.addColorStop(1,`rgba(255,255,255,${.95*alpha})`);
+
+    ctx.save();
+    ctx.lineCap='round';
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=7.5*e.size;
+    ctx.globalAlpha=.34*alpha;
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(e.x,e.y); ctx.stroke();
+
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=3.2*e.size;
+    ctx.globalAlpha=.75*alpha;
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(e.x,e.y); ctx.stroke();
+
+    ctx.strokeStyle='#fff';
+    ctx.lineWidth=1.05*e.size;
+    ctx.globalAlpha=.95*alpha;
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(e.x,e.y); ctx.stroke();
+
+    // Pequenos fragmentos luminosos atrás do meteoro.
+    for(const p of e.dust){
+      const d=(p.d*.88+.06)*e.length;
+      const px=e.x-dx*d;
+      const py=e.y-dy*d;
+      const tw=.45+.55*Math.sin(t*7+p.d*12+e.phase);
+      ctx.globalAlpha=alpha*p.a*tw;
+      ctx.fillStyle=e.hue==='pink'?'#ffd9ee':'#eaf3ff';
+      ctx.beginPath(); ctx.arc(px,py,p.r*e.size,0,TAU); ctx.fill();
+    }
+
+    // Halo do núcleo.
+    const halo=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,13*e.size);
+    halo.addColorStop(0,`rgba(255,255,255,${.95*alpha})`);
+    halo.addColorStop(.18,`rgba(255,245,252,${.62*alpha})`);
+    halo.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.globalAlpha=1;
+    ctx.fillStyle=halo;
+    ctx.beginPath(); ctx.arc(e.x,e.y,13*e.size,0,TAU); ctx.fill();
+
+    // Núcleo branco + flare em quatro direções.
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(e.x,e.y,2.15*e.size,0,TAU); ctx.fill();
+    ctx.globalAlpha=.55*alpha;
+    ctx.lineWidth=.8*e.size;
+    ctx.beginPath();
+    ctx.moveTo(e.x-8*e.size,e.y); ctx.lineTo(e.x+8*e.size,e.y);
+    ctx.moveTo(e.x,e.y-8*e.size); ctx.lineTo(e.x,e.y+8*e.size);
+    ctx.stroke();
+    ctx.restore();
+
+    e.x+=dx*speed;
+    e.y+=dy*speed;
+    e.life+=dt;
+  }
+
+  function draw(now){
+    const dt=Math.min(2.2,(now-last)/16.6667);
+    last=now;
+    const t=now/1000;
+    ctx.clearRect(0,0,W,H);
+
+    // Estrelas distantes com cintilação suave.
+    for(const s of bgStars){
+      const tw=.72+.28*Math.sin(t*s.speed+s.phase);
+      ctx.globalAlpha=s.a*tw;
+      ctx.fillStyle='#fff';
+      ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,TAU); ctx.fill();
+    }
+
+    // Ritmo irregular: pequenos grupos para parecer chuva natural, não repetitiva.
+    if(!reduce && shooting.length<4){
+      const chance=shooting.length===0 ? 1/38 : 1/105;
+      if(Math.random()<chance) shooting.push(createShootingStar());
+    }
+
+    for(let i=shooting.length-1;i>=0;i--){
+      const e=shooting[i];
+      drawMeteor(e,t,dt);
+      if(e.x<-180 || e.y>H+180 || e.life>e.maxLife) shooting.splice(i,1);
+    }
+
+    ctx.globalAlpha=1;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  addEventListener('resize',resize,{passive:true});
+  requestAnimationFrame(draw);
+})();
+</script>
+
+
+
+<style id="final-clean-background">
+/* =========================================================
+   LIMPEZA FINAL — um único universo preto
+   O fundo antigo não participa mais da composição.
+========================================================= */
+html,body{
+  background:#000 !important;
+  background-image:none !important;
+}
+body::before,body::after{
+  background:none !important;
+  box-shadow:none !important;
+}
+#site,
+#site > section,
+#site > footer,
+.hero,
+.section,
+.storyRiver,
+.musicWorld,
+.scrapbook,
+.letterSection,
+.secretSection,
+.countdownSection,
+.lockedSection,
+footer,
+#birthdayWorld{
+  background:transparent !important;
+  background-image:none !important;
+}
+/* Nenhuma peça da paisagem antiga pode aparecer por trás das estrelas. */
+.moon,.sun,.planet,.mountains,.lake,.mist,.moonReflection,.waterLight,
+.celestePixelSky,.pixelMountain,.pixelCloud,.scrapPixelBackdrop,.birthdaySun,
+.sunOrb{
+  display:none !important;
+  visibility:hidden !important;
+}
+/* O canvas é o único desenho do céu. */
+#fallingStars{
+  position:fixed !important;
+  inset:0 !important;
+  width:100vw !important;
+  height:100vh !important;
+  z-index:0 !important;
+  pointer-events:none !important;
+}
+/* Conteúdo acima do céu. */
+#site{position:relative;z-index:2;}
+#site > *{position:relative;z-index:2;}
+/* O gato fica fora de qualquer stacking context das seções. */
+#scamp-cat{
+  position:fixed !important;
+  left:0;
+  top:0;
+  width:64px !important;
+  height:64px !important;
+  z-index:2147483647 !important;
+  pointer-events:none !important;
+  transform:none;
+  isolation:isolate;
+  image-rendering:pixelated;
+  background-repeat:no-repeat;
+}
+/* Os papéis continuam sendo os únicos blocos claros grandes. */
+.scrapPaper,.letterPaper{background:#fffafc !important;}
+</style>
+
+</body>
+</html>
+
+<style id="final-art-cleanup">
+/* Limpeza solicitada: nenhuma montanha azul ou nuvem da arte antiga. */
+.mountains, .pixelMountain, .pixelCloud, .cloud1, .cloud2,
+.scrapCloud, .scrapHill, .scrapPixelBackdrop {
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+}
+
+/* Hello Kitty continua visível no scrapbook. */
+.kittyPixelArt, #helloKittyPixel {
+  visibility:visible !important;
+}
+</style>
